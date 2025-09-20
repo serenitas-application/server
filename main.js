@@ -2,6 +2,7 @@ import 'dotenv/config';
 import Fastify from 'fastify';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
+import cors from '@fastify/cors';
 import { appServices } from './src/setup.js';
 import appRoutes from './src/router/index.js';
 import { appConfig } from './src/app-config.js';
@@ -12,6 +13,7 @@ import { httpErrorHandler } from './src/infrastructure/http-error-handling.js';
 import { common } from './src/common/index.js';
 import { PrismaClient } from '@prisma/client';
 import { authGuard } from './src/common/guards/auth.guard.js';
+
 const prisma = new PrismaClient();
 
 const LOG_FOLDER_PATH = './logs';
@@ -29,6 +31,12 @@ const app = Fastify({
   trustProxy: true,
 });
 
+app.register(cors, {
+  origin: appConfig.origin,
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+});
 app.register(fastifyCookie);
 app.register(fastifySession, {
   secret: appConfig.session.secret,

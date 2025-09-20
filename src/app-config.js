@@ -1,5 +1,6 @@
 export const appConfig = {
   port: Number(process.env.PORT || 5000),
+  origin: process.env.API_ORIGIN,
   session: {
     secret: process.env.SESSION_SECRET,
     maxAge: 1000 * 60 * 60 * 24 * 30,
