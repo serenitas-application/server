@@ -10,11 +10,10 @@ import connectPgSimple from 'connect-pg-simple';
 import { pg } from './src/infrastructure/db.js';
 import { StreamForLogger } from './src/infrastructure/logger.js';
 import { httpErrorHandler } from './src/infrastructure/http-error-handling.js';
-import { common } from './src/common/index.js';
 import { PrismaClient } from '@prisma/client';
-import { authGuard } from './src/common/guards/auth.guard.js';
-
-const prisma = new PrismaClient();
+import { authGuard } from './src/guards/auth.guard.js';
+import { corsConfig } from './src/plugins/cors.js';
+import { sessionsConfig } from './src/plugins/sessions.js';
 
 const LOG_FOLDER_PATH = './logs';
 const streamForLogger = new StreamForLogger(LOG_FOLDER_PATH);
@@ -30,37 +29,22 @@ const app = Fastify({
   logger: { level: 'info', stream: streamForLogger },
   trustProxy: true,
 });
+const prisma = new PrismaClient();
 
-app.register(cors, {
-  origin: appConfig.origin,
-  credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-});
+app.register(cors, corsConfig);
 app.register(fastifyCookie);
-app.register(fastifySession, {
-  secret: appConfig.session.secret,
-  saveUninitialized: false,
-  store,
-  rolling: true,
-  cookie: {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: false,
-    maxAge: appConfig.session.maxAge,
-    path: '/',
-  },
-});
+app.register(fastifySession, sessionsConfig(store));
 app.setErrorHandler(httpErrorHandler);
 app.decorate('authGuard', authGuard);
-app.decorate('services', appServices(prisma, common));
+app.decorate('services', appServices(prisma));
 await app.register(appRoutes);
 
 const server = async () => {
   try {
+    await prisma.$connect();
     await app.listen({ port: appConfig.port });
   } catch (error) {
-    app.log.error(error, 'Server ERROR');
+    app.log.error(error);
     process.exit(1);
   }
 };
