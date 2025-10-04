@@ -1,0 +1,8 @@
+model PageTemplate {
+    id          Int    @id @default(autoincrement())
+    name        String
+    description String
+    config      Json
+
+    @@map("page_templates")
+}
