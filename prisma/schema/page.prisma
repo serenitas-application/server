@@ -1,0 +1,16 @@
+model Page {
+    id           Int       @id @default(autoincrement())
+    title        String
+    content      String
+    createDate   DateTime  @default(now()) @map("created_date") @db.Timestamptz(6)
+    hiddenStatus Boolean   @default(false) @map("hidden_status")
+    isPrivate    Boolean   @default(false) @map("is_private")
+    isLiked      Boolean   @default(false) @map("is_liked")
+    updateDate   DateTime? @map("updated_date") @db.Timestamptz(6)
+    groupId      Int       @map("group_id")
+
+    group PageGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+    @@index([groupId])
+    @@map("journals")
+}

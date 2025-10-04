@@ -1,0 +1,16 @@
+model Diary {
+    id        Int      @id @default(autoincrement())
+    title     String
+    content   String
+    date      DateTime @default(now()) @map("date") @db.Timestamptz(6)
+    isPrivate Boolean  @default(false) @map("is_private")
+    userId    Int      @map("user_id")
+    moodId    Int      @map("mood_id")
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    mood Mood @relation(fields: [moodId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([moodId])
+    @@map("diaries")
+}

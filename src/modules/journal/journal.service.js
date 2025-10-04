@@ -1,5 +1,5 @@
-export function dailyDiaryService(db) {
-  const repo = db['DailyDiary'];
+export function journalService(db) {
+  const repo = db['journal'];
 
   async function findAll(userId) {
     const items = await repo.findMany({ where: { userId } });

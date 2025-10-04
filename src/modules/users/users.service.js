@@ -6,13 +6,11 @@ export function userService(repo) {
   }
 
   async function create(payload) {
-    const newUser = await usersRepo.create({ data: payload });
-    return newUser;
+    return await usersRepo.create({ data: payload });
   }
 
   async function findByEmail(email) {
-    const user = await usersRepo.findUnique({ where: { email } });
-    return user;
+    return await usersRepo.findUnique({ where: { email } });
   }
 
   return { create, findByEmail, getUserInfo };

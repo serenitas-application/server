@@ -1,0 +1,14 @@
+model PageGroup {
+    id           Int       @id @default(autoincrement())
+    name         String
+    createDate   DateTime  @default(now()) @map("created_date") @db.Timestamptz(6)
+    hiddenStatus Boolean   @default(false) @map("hidden_status")
+    updateDate   DateTime? @map("updated_date") @db.Timestamptz(6)
+    userId       Int       @map("user_id")
+
+    user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    pages Page[]
+
+    @@index([userId])
+    @@map("page_groups")
+}
