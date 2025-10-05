@@ -3,7 +3,7 @@ import Fastify from 'fastify';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import cors from '@fastify/cors';
-import { appServices } from './src/setup.js';
+import { appServices } from './src/app-setup.js';
 import appRoutes from './src/router/index.js';
 import { appConfig } from './src/app-config.js';
 import connectPgSimple from 'connect-pg-simple';

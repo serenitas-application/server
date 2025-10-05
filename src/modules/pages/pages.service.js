@@ -1,5 +1,5 @@
-export function pagesService(db) {
-  const repo = db['pages'];
+export function pagesService({ db }) {
+  const repo = db['page'];
 
   async function findAll(userId) {
     const items = await repo.findMany({ where: { userId } });

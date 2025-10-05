@@ -1,7 +1,7 @@
 import { pagesSchemes } from './schemas/pages.schemas.js';
 
 export async function pagesRoutes(app) {
-  const { journal } = app.services;
+  const { pages } = app.services;
 
   app.route({
     method: 'GET',
@@ -9,7 +9,7 @@ export async function pagesRoutes(app) {
     preHandler: app.authGuard,
     handler: async (req) => {
       const { userId } = req.session;
-      const result = await journal.findAll(userId);
+      const result = await pages.findAll(userId);
       return { data: result };
     },
   });
@@ -22,20 +22,20 @@ export async function pagesRoutes(app) {
     handler: async (req) => {
       const payload = req.body;
       const { userId } = req.session;
-      const result = await journal.create(payload, userId);
+      const result = await pages.create(payload, userId);
       return { data: result };
     },
   });
 
   app.route({
     method: 'PATCH',
-    url: '/',
+    url: '/:id',
     preHandler: app.authGuard,
     schema: pagesSchemes.update,
     handler: async (req) => {
       const payload = req.body;
       const { userId } = req.session;
-      const result = await journal.create(payload, userId);
+      const result = await pages.update(payload, userId);
       return { data: result };
     },
   });
@@ -47,7 +47,7 @@ export async function pagesRoutes(app) {
     handler: async (req) => {
       const payload = req.body;
       const { userId } = req.session;
-      const result = await journal.create(payload, userId);
+      const result = await pages.deleteOne(payload, userId);
       return { data: result };
     },
   });

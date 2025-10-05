@@ -1,5 +1,6 @@
-export function authService(userService, common) {
+export function authService({ common }, services) {
   const { crypto, apiError } = common;
+  const { user: userService } = services;
 
   const login = async ({ email, password }) => {
     if (!email || !password) apiError.BadRequest('Invalid data');
