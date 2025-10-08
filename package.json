@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "node main.js",
-    "dev": "node --watch main.js",
+    "dev": "node --watch src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -18,9 +18,11 @@
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.1.0",
-    "@fastify/session": "^11.1.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/swagger": "^9.5.2",
+    "@fastify/swagger-ui": "^5.2.3",
     "@prisma/client": "^6.16.2",
-    "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.2.2",
     "fastify": "^5.5.0",
     "fastify-plugin": "^5.0.1",

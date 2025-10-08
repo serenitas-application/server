@@ -8,7 +8,7 @@ export async function journalRoutes(fastify) {
     url: '/',
     preHandler: fastify.authGuard,
     handler: async (req) => {
-      const { userId } = req.session;
+      const userId = req.sessionId;
       const result = await journal.findAll(userId);
       return { data: result };
     },

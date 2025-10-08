@@ -1,20 +1,30 @@
-export function authService(userService, common) {
-  const { crypto, apiError } = common;
+import { AppError, ErrorCode } from '../../common/app-error.js';
 
+export function authService(userService) {
   const login = async ({ email, password }) => {
-    if (!email || !password) apiError.BadRequest('Invalid data');
     const currentUser = await userService.findByEmail(email);
-    if (!currentUser) apiError.BadRequest('Wrong email or password');
+    if (!currentUser) {
+      throw new AppError(
+        ErrorCode.INVALID_CREDENTIALS,
+        'Wrong email or password',
+      );
+    }
     const correctPassword = await crypto.verify(currentUser.password, password);
-    if (!correctPassword) apiError.BadRequest('Wrong email or password');
+    if (!correctPassword) {
+      throw new AppError(
+        ErrorCode.INVALID_CREDENTIALS,
+        'Wrong email or password',
+      );
+    }
     return { id: currentUser.id };
   };
 
   const registration = async (payload) => {
     const { email, username, password } = payload;
-    if (!email || !username || !password) apiError.BadRequest('Invalid data');
     const registratedUser = await userService.findByEmail(email);
-    if (registratedUser) apiError.Conflict(`User ${email} already exist`);
+    if (registratedUser) {
+      throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
+    }
     const hashPassword = await crypto.hash(password);
     const result = await userService.create({
       email,
