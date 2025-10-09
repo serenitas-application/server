@@ -16,6 +16,7 @@ export async function startServer(app) {
   server.decorateRequest('sessionId', '');
 
   server.setNotFoundHandler(app.errorHandler.notFound);
+  server.setSchemaErrorFormatter(app.errorHandler.validateSchemas);
   server.setErrorHandler(app.errorHandler.api);
   await server.register(fastifyRateLimit, {
     errorResponseBuilder: app.errorHandler.tooManyRequests,

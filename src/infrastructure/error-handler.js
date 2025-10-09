@@ -7,7 +7,9 @@ function api(error, request, reply) {
       message: error.message,
     });
   } else {
-    this.log.error(`Unknown error at ${request.method} ${request.url}:`, error);
+    this.log.error(
+      `Unknown error at ${request.method} ${request.url}: ${error}`,
+    );
 
     reply.status(500).send({
       code: ErrorCode.INTERNAL_SERVER_ERROR,
@@ -15,6 +17,17 @@ function api(error, request, reply) {
       timestamp: Date.now(),
     });
   }
+}
+
+function validateSchemas(errors) {
+  const error = errors[0];
+
+  const fieldName = error.instancePath.substring(1);
+  const field = fieldName ? fieldName : 'Field';
+  const reason = error.message ?? 'is invalid';
+  const message = `${field}: ${reason}`;
+
+  return new AppError(ErrorCode.VALIDATION_ERROR, message);
 }
 
 function tooManyRequests() {
@@ -27,7 +40,7 @@ function tooManyRequests() {
 function notFound(req) {
   throw new AppError(
     ErrorCode.NOT_FOUND,
-    `Requested URLddf (${req.method} ${req.url}) not found`,
+    `Requested URL (${req.method} ${req.url}) not found`,
   );
 }
 
@@ -35,4 +48,5 @@ export const errorHandler = {
   api,
   notFound,
   tooManyRequests,
+  validateSchemas,
 };
