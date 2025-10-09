@@ -1,4 +1,5 @@
-import { AppError, ErrorCode } from '../../common/app-error.js';
+import { crypto } from '../../common/crypto/crypto.js';
+import { AppError, ErrorCode } from '../../common/app-error/app-error.js';
 
 export function authService(userService) {
   async function login(payload) {
@@ -17,6 +18,7 @@ export function authService(userService) {
         'Wrong email or password',
       );
     }
+
     return { id: currentUser.id };
   }
 
@@ -26,6 +28,7 @@ export function authService(userService) {
     if (registratedUser) {
       throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
     }
+
     const hashPassword = await crypto.hash(password);
     const result = await userService.create({
       email,
