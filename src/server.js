@@ -9,6 +9,7 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 export async function startServer(app) {
   const server = fastify({
     logger: { level: 'info', stream: app.log },
+    trustProxy: true,
   });
 
   server.decorateRequest('user', null);
@@ -37,6 +38,6 @@ export async function startServer(app) {
   const startedOn = await server.listen({
     port: app.config.port,
   });
-  console.log(app.log);
-  app.log.error('Server', `Listening started on ${startedOn}`);
+
+  server.log.error(`Application runs on ${startedOn}`);
 }

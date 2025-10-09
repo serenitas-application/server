@@ -7,11 +7,7 @@ function api(error, request, reply) {
       message: error.message,
     });
   } else {
-    // this.log.error(
-    //   'Server',
-    //   `Unknown error at ${request.method} ${request.url}:`,
-    //   error,
-    // );
+    this.log.error(`Unknown error at ${request.method} ${request.url}:`, error);
 
     reply.status(500).send({
       code: ErrorCode.INTERNAL_SERVER_ERROR,

@@ -1,3 +1,4 @@
+import path from 'node:path';
 import router from './router/index.js';
 import { databaseProvider } from './infrastructure/db.js';
 import { appConfig } from './config.js';
@@ -9,8 +10,7 @@ import { authGuard } from './modules/auth/auth.guard.js';
 import { swaggerConfig } from './swagger/app.swagger.js';
 import { StreamForLogger } from './infrastructure/logger.js';
 
-const LOG_FOLDER_PATH = './logs';
-const streamForLogger = new StreamForLogger(LOG_FOLDER_PATH);
+const LOG_FOLDER_NAME = 'logs';
 
 function appServices(db) {
   const user = userService(db);
@@ -25,6 +25,9 @@ function appGuards(db) {
 }
 
 export async function createAplication() {
+  const LOG_DIR = path.resolve(process.cwd(), LOG_FOLDER_NAME);
+  const streamForLogger = new StreamForLogger(LOG_DIR);
+
   const db = databaseProvider();
   const services = appServices(db);
   const guards = appGuards(db);
