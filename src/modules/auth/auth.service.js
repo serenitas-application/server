@@ -1,7 +1,8 @@
 import { AppError, ErrorCode } from '../../common/app-error.js';
 
 export function authService(userService) {
-  const login = async ({ email, password }) => {
+  async function login(payload) {
+    const { email, password } = payload;
     const currentUser = await userService.findByEmail(email);
     if (!currentUser) {
       throw new AppError(
@@ -17,9 +18,9 @@ export function authService(userService) {
       );
     }
     return { id: currentUser.id };
-  };
+  }
 
-  const registration = async (payload) => {
+  async function registration(payload) {
     const { email, username, password } = payload;
     const registratedUser = await userService.findByEmail(email);
     if (registratedUser) {
@@ -32,7 +33,7 @@ export function authService(userService) {
       username,
     });
     return { id: result.id };
-  };
+  }
 
   return { login, registration };
 }
