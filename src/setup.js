@@ -10,8 +10,6 @@ import { authGuard } from './modules/auth/auth.guard.js';
 import { swaggerConfig } from './swagger/app.swagger.js';
 import { StreamForLogger } from './infrastructure/logger.js';
 
-const LOG_FOLDER_NAME = 'logs';
-
 function appServices(db) {
   const user = userService(db);
   const auth = authService(user);
@@ -25,6 +23,8 @@ function appGuards(db) {
 }
 
 export async function setupApplication() {
+  const LOG_FOLDER_NAME = 'logs';
+
   const LOG_DIR = path.resolve(process.cwd(), LOG_FOLDER_NAME);
   const streamForLogger = new StreamForLogger(LOG_DIR);
 
