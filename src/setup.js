@@ -24,7 +24,7 @@ function appGuards(db) {
   return { auth };
 }
 
-export async function createAplication() {
+export async function setupApplication() {
   const LOG_DIR = path.resolve(process.cwd(), LOG_FOLDER_NAME);
   const streamForLogger = new StreamForLogger(LOG_DIR);
 

@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import { startServer } from './server.js';
-import { createAplication } from './setup.js';
+import { setupApplication } from './setup.js';
 
 async function server() {
-  const app = await createAplication();
+  const app = await setupApplication();
   await startServer(app);
 }
 
