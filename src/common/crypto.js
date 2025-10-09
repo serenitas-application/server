@@ -1,9 +1,9 @@
-import crypto from 'crypto';
+import nodeCrypto from 'node:crypto';
 
 const hash = (value) =>
   new Promise((resolve, reject) => {
-    const salt = crypto.randomBytes(16).toString('base64');
-    crypto.scrypt(value, salt, 64, (err, result) => {
+    const salt = nodeCrypto.randomBytes(16).toString('base64');
+    nodeCrypto.scrypt(value, salt, 64, (err, result) => {
       if (err) reject(err);
       resolve(salt + ':' + result.toString('base64'));
     });
@@ -12,7 +12,7 @@ const hash = (value) =>
 const verify = (hashedValue, value) =>
   new Promise((resolve, reject) => {
     const [salt, hashed] = hashedValue.split(':');
-    crypto.scrypt(value, salt, 64, (err, result) => {
+    nodeCrypto.scrypt(value, salt, 64, (err, result) => {
       if (err) reject(err);
       resolve(hashed === result.toString('base64'));
     });
@@ -20,4 +20,4 @@ const verify = (hashedValue, value) =>
 
 const generate = (id) => `TEST${id}TEST`;
 
-export const cryptoService = { hash, verify, generate };
+export const crypto = { hash, verify, generate };
