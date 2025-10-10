@@ -11,16 +11,7 @@ export interface AuthResult {
   id: number;
 }
 
-export interface UserService {
-  findByEmail(email: string): Promise<{ id: number; password: string } | null>;
-  create(data: {
-    email: string;
-    username: string;
-    password: string;
-  }): Promise<{ id: number }>;
-}
-
-export declare function authService(userService: UserService): {
+export declare function authService(userService: any): {
   login(payload: LoginPayload): Promise<AuthResult>;
   registration(payload: RegistrationPayload): Promise<AuthResult>;
 };

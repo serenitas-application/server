@@ -1,7 +1,7 @@
-export async function appHealthCheck(app) {
+export async function appRoutes(app) {
   app.route({
     method: 'GET',
-    url: '/',
+    url: '/health',
     handler: async () => ({ alive: true }),
   });
 }

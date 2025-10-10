@@ -4,6 +4,11 @@
     "moduleResolution": "node",
     "strict": true,
     "baseUrl": ".",
+    "paths": {
+      "#src/*": ["./src/*"],
+      "#modules/*": ["./src/modules/*"],
+      "#lib/*": ["./src/lib/*"]
+    },
     "preserveWatchOutput": true,
     "allowJs": true,
     "noEmit": true,

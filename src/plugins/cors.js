@@ -1,4 +1,4 @@
-import { appConfig } from '../config.js';
+import { appConfig } from '../app/app.config.js';
 
 export const corsConfig = {
   origin: appConfig.origin,

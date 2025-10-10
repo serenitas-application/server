@@ -1,25 +1,12 @@
 import path from 'node:path';
-import router from './router/index.js';
-import { databaseProvider } from './infrastructure/db.js';
-import { appConfig } from './config.js';
+import router from './router.js';
+import { appConfig } from './app/app.config.js';
+import { appServices } from './app/app.services.js';
+import { appGuards } from './app/app.guards.js';
+import { swaggerConfig } from './app/app.swagger.js';
 import { errorHandler } from './infrastructure/error-handler.js';
-import { userService } from './modules/users/index.js';
-import { authService, authGuard } from './modules/auth/index.js';
-import { journalService } from './modules/journal/index.js';
-import { swaggerConfig } from './swagger/app.swagger.js';
 import { StreamForLogger } from './infrastructure/logger.js';
-
-function appServices(db) {
-  const user = userService(db);
-  const auth = authService(user);
-  const journal = journalService(db);
-  return { user, auth, journal };
-}
-
-function appGuards(db) {
-  const auth = authGuard(db);
-  return { auth };
-}
+import { databaseProvider } from './infrastructure/db.js';
 
 export async function setupApplication() {
   const LOG_FOLDER_NAME = 'logs';
@@ -29,7 +16,7 @@ export async function setupApplication() {
 
   const db = databaseProvider();
   const services = appServices(db);
-  const guards = appGuards(db);
+  const guards = appGuards();
 
   return {
     services,
