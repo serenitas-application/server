@@ -104,4 +104,33 @@ export default [
       'template-curly-spacing': ['error', 'never'],
     },
   },
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    files: ['**/*.ts', '**/*.d.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.eslint.json',
+        tsconfigRootDir: import.meta.dirname,
+        sourceType: 'module',
+      },
+    },
+    plugins: { import: importPlugin },
+    rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports' },
+      ],
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        { checksVoidReturn: false },
+      ],
+      'import/no-unresolved': 'error',
+    },
+    settings: {
+      'import/resolver': {
+        typescript: { alwaysTryTypes: true },
+        node: true,
+      },
+    },
+  },
 ];

@@ -1,4 +1,4 @@
-import { AppError, ErrorCode } from '../common/app-error.js';
+import { AppError, ErrorCode } from '../common/app-error/app-error.js';
 
 function api(error, request, reply) {
   if (error instanceof AppError) {

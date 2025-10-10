@@ -4,9 +4,8 @@ import { databaseProvider } from './infrastructure/db.js';
 import { appConfig } from './config.js';
 import { errorHandler } from './infrastructure/error-handler.js';
 import { userService } from './modules/users/index.js';
-import { authService } from './modules/auth/index.js';
+import { authService, authGuard } from './modules/auth/index.js';
 import { journalService } from './modules/journal/index.js';
-import { authGuard } from './modules/auth/auth.guard.js';
 import { swaggerConfig } from './swagger/app.swagger.js';
 import { StreamForLogger } from './infrastructure/logger.js';
 
