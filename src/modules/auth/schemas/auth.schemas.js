@@ -12,9 +12,9 @@ const login = {
 const registration = {
   body: {
     type: 'object',
-    required: ['emai', 'username', 'password'],
+    required: ['email', 'username', 'password'],
     properties: {
-      emai: { type: 'string' },
+      email: { type: 'string' },
       username: { type: 'string' },
       password: { type: 'string' },
     },

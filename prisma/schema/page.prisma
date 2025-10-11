@@ -12,5 +12,5 @@ model Page {
     group PageGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
     @@index([groupId])
-    @@map("journals")
+    @@map("pages")
 }

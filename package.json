@@ -5,6 +5,10 @@
   "private": true,
   "main": "main.js",
   "type": "module",
+  "imports": {
+    "#modules/*": "./src/modules/*",
+    "#common/*": "./src/common/*"
+  },
   "scripts": {
     "start": "node main.js",
     "dev": "node --watch src/main.js",
