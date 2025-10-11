@@ -6,9 +6,8 @@
   "main": "main.js",
   "type": "module",
   "imports": {
-    "#src/*": "./src/*",
     "#modules/*": "./src/modules/*",
-    "#lib/*": "./src/lib/*"
+    "#common/*": "./src/common/*"
   },
   "scripts": {
     "start": "node main.js",

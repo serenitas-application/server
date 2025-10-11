@@ -5,9 +5,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "#src/*": ["./src/*"],
       "#modules/*": ["./src/modules/*"],
-      "#lib/*": ["./src/lib/*"]
+      "#common/*": ["./src/common/*"]
     },
     "preserveWatchOutput": true,
     "allowJs": true,

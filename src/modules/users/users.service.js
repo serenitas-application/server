@@ -1,6 +1,6 @@
 const PAGE_GROUP_DEFAULT = 'General';
 
-export function userService({ db }, services) {
+export function userService(db, services) {
   const { pageGroups: pageGroupsService } = services;
   const usersRepo = db['user'];
 

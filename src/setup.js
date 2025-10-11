@@ -1,6 +1,6 @@
 import path from 'node:path';
-import router from './router.js';
 import { appConfig } from './app/app.config.js';
+import { appRoutes } from './app/app.routes.js';
 import { appServices } from './app/app.services.js';
 import { appGuards } from './app/app.guards.js';
 import { swaggerConfig } from './app/app.swagger.js';
@@ -21,7 +21,7 @@ export async function setupApplication() {
   return {
     services,
     guards,
-    router,
+    routes: appRoutes,
     errorHandler,
     config: appConfig,
     swagger: swaggerConfig,

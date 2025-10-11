@@ -1,7 +1,20 @@
-export async function appRoutes(app) {
+import { authRoutes } from '#modules/auth/auth.routes.js';
+import { pageGroupsRoutes } from '#modules/page-groups/page-groups.routes.js';
+import { pagesRoutes } from '#modules/pages/pages.routes.js';
+import { usersRoutes } from '#modules/users/users.routes.js';
+
+async function mainRoutes(app) {
   app.route({
     method: 'GET',
     url: '/health',
     handler: async () => ({ alive: true }),
   });
 }
+
+export const appRoutes = {
+  app: mainRoutes,
+  auth: authRoutes,
+  users: usersRoutes,
+  pages: pagesRoutes,
+  pageGroups: pageGroupsRoutes,
+};

@@ -7,37 +7,42 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 
 export async function startServer(app) {
+  const { config, log, errorHandler, guards, services, swagger, routes } = app;
   const server = fastify({
-    logger: { level: 'info', stream: app.log },
+    logger: { level: 'info', stream: log },
     trustProxy: true,
   });
 
   server.decorateRequest('user', null);
   server.decorateRequest('sessionId', '');
 
-  server.setNotFoundHandler(app.errorHandler.notFound);
-  server.setSchemaErrorFormatter(app.errorHandler.validateSchemas);
-  server.setErrorHandler(app.errorHandler.api);
+  server.setNotFoundHandler(errorHandler.notFound);
+  server.setSchemaErrorFormatter(errorHandler.validateSchemas);
+  server.setErrorHandler(errorHandler.api);
   await server.register(fastifyRateLimit, {
-    errorResponseBuilder: app.errorHandler.tooManyRequests,
+    errorResponseBuilder: errorHandler.tooManyRequests,
   });
 
-  await server.decorate('guards', app.guards);
-  await server.decorate('services', app.services);
+  await server.decorate('guards', guards);
+  await server.decorate('services', services);
 
-  await server.register(fastifyCors, app.config.cors);
+  await server.register(fastifyCors, config.cors);
   await server.register(fastifyCookie);
   await server.register(fastifyHelmet);
 
-  await server.register(app.router);
-
-  await server.register(fastifySwagger, app.swagger);
+  await server.register(fastifySwagger, swagger);
   await server.register(fastifySwaggerUi, {
     routePrefix: '/api',
   });
 
+  await server.register(routes.app);
+  await server.register(routes.auth, { prefix: '/api/auth' });
+  await server.register(routes.users, { prefix: '/api/accounts' });
+  await server.register(routes.pages, { prefix: '/api/pages' });
+  await server.register(routes.pageGroups, { prefix: '/api/page-groups' });
+
   const startedOn = await server.listen({
-    port: app.config.port,
+    port: config.port,
   });
 
   server.log.error(`Application runs on ${startedOn}`);

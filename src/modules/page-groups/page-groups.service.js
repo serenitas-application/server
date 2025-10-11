@@ -1,6 +1,7 @@
-export function pageGroupsService({ db, common }) {
+import { AppError, ErrorCode } from '#common/app-error/app-error.js';
+
+export function pageGroupsService(db) {
   const repo = db['pageGroup'];
-  const { apiError } = common;
 
   async function findAll(query, userId) {
     const { page = 1, limit = 10 } = query;
@@ -18,7 +19,10 @@ export function pageGroupsService({ db, common }) {
     const { name } = payload;
     const alreadyExist = await repo.findFirst({ where: { name, userId } });
     if (alreadyExist) {
-      return apiError.BadRequest('Group with this name already exist');
+      throw new AppError(
+        ErrorCode.CONFLICT,
+        'Group with this name already exist',
+      );
     }
     return await repo.create({ data: { ...payload, userId } });
   }
