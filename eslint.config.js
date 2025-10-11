@@ -2,6 +2,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import importPlugin from 'eslint-plugin-import';
+import tseslint from 'typescript-eslint';
 
 export default [
   { ignores: ['dist'] },
@@ -21,6 +22,22 @@ export default [
     },
     plugins: {
       import: importPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.eslint.json',
+        },
+        node: true,
+        alias: {
+          map: [
+            ['#modules', './src/modules'],
+            ['#common', './src/common'],
+          ],
+          extensions: ['.js', '.ts', '.d.ts'],
+        },
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -104,33 +121,27 @@ export default [
       'template-curly-spacing': ['error', 'never'],
     },
   },
-  ...tseslint.configs.recommendedTypeChecked,
-  {
+  ...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
+    ...cfg,
     files: ['**/*.ts', '**/*.d.ts'],
     languageOptions: {
+      ...(cfg.languageOptions ?? {}),
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        ...(cfg.languageOptions?.parserOptions ?? {}),
+        project: ['./tsconfig.eslint.json'],
         tsconfigRootDir: import.meta.dirname,
-        sourceType: 'module',
       },
     },
-    plugins: { import: importPlugin },
-    rules: {
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        { prefer: 'type-imports' },
-      ],
-      '@typescript-eslint/no-misused-promises': [
-        'error',
-        { checksVoidReturn: false },
-      ],
-      'import/no-unresolved': 'error',
-    },
+    plugins: { ...(cfg.plugins ?? {}), import: importPlugin },
     settings: {
       'import/resolver': {
         typescript: { alwaysTryTypes: true },
         node: true,
       },
     },
-  },
+    rules: {
+      ...(cfg.rules ?? {}),
+      'import/no-unresolved': 'error',
+    },
+  })),
 ];
