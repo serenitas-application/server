@@ -10,7 +10,7 @@
     "#common/*": "./src/common/*"
   },
   "scripts": {
-    "start": "node main.js",
+    "start": "node src/main.js",
     "dev": "node --watch src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
@@ -44,6 +44,6 @@
     "prettier": "^3.6.2",
     "prisma": "^6.15.0",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.42.0"
+    "typescript-eslint": "^8.46.0"
   }
 }

@@ -1,7 +1,4 @@
-const PAGE_GROUP_DEFAULT = 'General';
-
-export function userService(db, services) {
-  const { pageGroups: pageGroupsService } = services;
+export function userService(db) {
   const usersRepo = db['user'];
 
   async function getUserInfo(userId) {
@@ -9,11 +6,7 @@ export function userService(db, services) {
   }
 
   async function create(payload) {
-    const groupObj = {
-      name: PAGE_GROUP_DEFAULT,
-    };
     const user = await usersRepo.create({ data: payload });
-    await pageGroupsService.create(groupObj, user.id);
     return user;
   }
 

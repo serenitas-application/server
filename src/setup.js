@@ -16,7 +16,7 @@ export async function setupApplication() {
 
   const db = databaseProvider();
   const services = appServices(db);
-  const guards = appGuards();
+  const guards = appGuards({ session: services.session });
 
   return {
     services,

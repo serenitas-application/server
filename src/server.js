@@ -13,8 +13,7 @@ export async function startServer(app) {
     trustProxy: true,
   });
 
-  server.decorateRequest('user', null);
-  server.decorateRequest('sessionId', '');
+  server.decorateRequest('session', null);
 
   server.setNotFoundHandler(errorHandler.notFound);
   server.setSchemaErrorFormatter(errorHandler.validateSchemas);
@@ -37,7 +36,7 @@ export async function startServer(app) {
 
   await server.register(routes.app);
   await server.register(routes.auth, { prefix: '/api/auth' });
-  await server.register(routes.users, { prefix: '/api/accounts' });
+  await server.register(routes.users, { prefix: '/api/users' });
   await server.register(routes.pages, { prefix: '/api/pages' });
   await server.register(routes.pageGroups, { prefix: '/api/page-groups' });
 
