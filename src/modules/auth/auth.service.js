@@ -1,9 +1,9 @@
-import { crypto } from '../../common/crypto/crypto.js';
-import { AppError, ErrorCode } from '../../common/app-error/app-error.js';
+import { crypto } from '#common/crypto/crypto.js';
+import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(userService) {
+export function authService(userService, sessionStore) {
   async function login(payload) {
-    const { email, password } = payload;
+    const { email, password, userAgent, ipAddress } = payload;
     const currentUser = await userService.findByEmail(email);
     if (!currentUser) {
       throw new AppError(
@@ -19,7 +19,14 @@ export function authService(userService) {
       );
     }
 
-    return { id: currentUser.id };
+    const sessionId = await sessionStore.create({
+      userId: currentUser.id,
+      userAgent,
+      ipAddress,
+      loginDate: new Date(),
+    });
+
+    return sessionId;
   }
 
   async function registration(payload) {

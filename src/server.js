@@ -13,8 +13,7 @@ export async function startServer(app) {
     trustProxy: true,
   });
 
-  server.decorateRequest('user', null);
-  server.decorateRequest('sessionId', '');
+  server.decorateRequest('session', null);
 
   server.setNotFoundHandler(errorHandler.notFound);
   server.setSchemaErrorFormatter(errorHandler.validateSchemas);

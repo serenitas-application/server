@@ -11,7 +11,18 @@ export interface AuthResult {
   id: number;
 }
 
-export declare function authService(userService: any): {
+interface SessionStore {
+  create(password: string): string;
+}
+
+interface UserService {
+  create(password: string): string;
+}
+
+export declare function authService(
+  userService: UserService,
+  sessionStore: SessionStore,
+): {
   login(payload: LoginPayload): Promise<AuthResult>;
   registration(payload: RegistrationPayload): Promise<AuthResult>;
 };

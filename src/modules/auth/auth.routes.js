@@ -1,17 +1,32 @@
+import { AUTH_SESSION_COOKIE_NAME } from './consts/index.js';
 import { authSchemas } from './schemas/auth.schemas.js';
 
 export async function authRoutes(fastify) {
-  const { auth: authService } = fastify.services;
+  const { auth: authService, session } = fastify.services;
 
   fastify.route({
     method: 'POST',
     url: '/login',
     schema: authSchemas.login,
-    handler: async (req) => {
+    handler: async (req, reply) => {
       const { email, password } = req.body;
-      const result = await authService.login({ email, password });
-      req.session.userId = result.id;
-      return { data: result };
+      const ip = req.ip;
+      const userAgent = req.headers['user-agent'] || 'n/a';
+
+      const sessionId = await authService.login({
+        email,
+        password,
+        ipAddress: ip,
+        userAgent,
+      });
+
+      reply.setCookie(AUTH_SESSION_COOKIE_NAME, sessionId, {
+        httpOnly: true,
+        path: '/',
+        maxAge: session.getSessionAgeInSeconds(),
+      });
+
+      return { data: sessionId };
     },
   });
 
@@ -26,7 +41,6 @@ export async function authRoutes(fastify) {
         username,
         password,
       });
-      req.session.userId = result.id;
       return { data: result };
     },
   });
