@@ -23,6 +23,8 @@ export async function authRoutes(app) {
 
       reply.setCookie(AUTH_SESSION_COOKIE_NAME, sessionId, {
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
         path: '/',
         maxAge: session.getSessionAgeInSeconds(),
       });
@@ -54,8 +56,10 @@ export async function authRoutes(app) {
       const { sessionId } = req.session;
       await authService.logout(sessionId);
       reply.clearCookie(AUTH_SESSION_COOKIE_NAME, {
-        path: '/',
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
       });
 
       return { ok: true };

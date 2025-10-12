@@ -29,7 +29,7 @@ export async function startServer(app) {
   await server.register(fastifyCookie, {
     httpOnly: true,
     secure: true,
-    sameSite: 'lax',
+    sameSite: 'none',
     path: '/',
   });
   await server.register(fastifyHelmet);
