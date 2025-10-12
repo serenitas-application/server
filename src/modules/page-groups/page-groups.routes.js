@@ -1,12 +1,11 @@
 export async function pageGroupsRoutes(app) {
   const { pageGroups } = app.services;
-
-  console.log(pageGroups);
+  const { auth } = app.guards;
 
   app.route({
     method: 'GET',
     url: '/',
-    preHandler: app.authGuard,
+    preHandler: auth.check,
     handler: async (req) => {
       const { userId } = req.session;
       const query = req.query;
@@ -18,7 +17,7 @@ export async function pageGroupsRoutes(app) {
   app.route({
     method: 'POST',
     url: '/',
-    preHandler: app.authGuard,
+    preHandler: auth.check,
     handler: async (req) => {
       const { userId } = req.session;
       const result = await pageGroups.create(userId);

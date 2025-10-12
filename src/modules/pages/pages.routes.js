@@ -2,11 +2,12 @@ import { pagesSchemes } from './schemas/pages.schemas.js';
 
 export async function pagesRoutes(app) {
   const { pages } = app.services;
+  const { auth } = app.guards;
 
   app.route({
     method: 'GET',
     url: '/',
-    preHandler: app.authGuard,
+    preHandler: auth.check,
     handler: async (req) => {
       const { userId } = req.session;
       const result = await pages.findAll(userId);
@@ -17,11 +18,11 @@ export async function pagesRoutes(app) {
   app.route({
     method: 'POST',
     url: '/',
-    preHandler: app.authGuard,
+    preHandler: auth.check,
     schema: pagesSchemes.create,
     handler: async (req) => {
       const payload = req.body;
-      const { userId } = req.session;
+      const userId = req.userId;
       const result = await pages.create(payload, userId);
       return { data: result };
     },
