@@ -45,5 +45,9 @@ export function authService(userService, sessionStore) {
     return { id: result.id };
   }
 
-  return { login, registration };
+  async function logout(sessionId) {
+    await sessionStore.delete(sessionId);
+  }
+
+  return { login, registration, logout };
 }
