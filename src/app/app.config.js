@@ -2,6 +2,7 @@ const SESSION_COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 30;
 
 export const appConfig = {
   port: Number(process.env.PORT || 5000),
+  host: process.env.HOST,
   session: {
     secret: process.env.SESSION_SECRET,
     maxAge: SESSION_COOKIE_MAX_AGE,

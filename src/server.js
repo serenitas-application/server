@@ -41,6 +41,7 @@ export async function startServer(app) {
   await server.register(routes.pageGroups, { prefix: '/api/page-groups' });
 
   const startedOn = await server.listen({
+    host: config.host,
     port: config.port,
   });
 
