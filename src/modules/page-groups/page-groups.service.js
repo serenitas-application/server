@@ -4,15 +4,10 @@ export function pageGroupsService(db) {
   const repo = db['pageGroup'];
 
   async function findAll(query, userId) {
-    const { page = 1, limit = 10 } = query;
-    const skip = (page - 1) * limit;
-    const total = await repo.count({ where: { userId } });
     const pageGroups = await repo.findMany({
       where: { userId },
-      skip,
-      take: limit,
     });
-    return { total, page, limit, items: pageGroups };
+    return { items: pageGroups };
   }
 
   async function create(payload, userId) {
