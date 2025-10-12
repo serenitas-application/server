@@ -26,7 +26,12 @@ export async function startServer(app) {
   await server.decorate('services', services);
 
   await server.register(fastifyCors, config.cors);
-  await server.register(fastifyCookie);
+  await server.register(fastifyCookie, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    path: '/',
+  });
   await server.register(fastifyHelmet);
 
   await server.register(fastifySwagger, swagger);
