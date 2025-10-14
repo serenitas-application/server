@@ -3,8 +3,7 @@ model Mood {
     name   String
     userId Int    @map("user_id")
 
-    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    diaries Diary[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@map("moods")
