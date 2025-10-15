@@ -7,13 +7,13 @@ export function baseRepo(repo) {
     return await repo.update({ where: { id }, data });
   }
 
-  async function findById(id) {
+  async function findOneById(id) {
     return await repo.findUnique({ where: { id } });
   }
 
-  async function findByField(field) {
+  async function findOneByField(field) {
     return await repo.findFirst({ where: { field } });
   }
 
-  return { findById, create, update, findByField };
+  return { findOneById, create, update, findOneByField };
 }

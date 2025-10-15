@@ -1,17 +1,12 @@
-export function userRepo(db) {
+import { baseRepo } from '#modules/common/base/base.repo.js';
+
+export function usersRepo(db) {
   const repo = db['users'];
+  const base = baseRepo(repo);
 
   async function getUserInfo(userId) {
     return await repo.findUnique({ where: { id: userId } });
   }
 
-  async function create(payload) {
-    return await repo.create({ data: payload });
-  }
-
-  async function findByEmail(email) {
-    return await repo.findUnique({ where: { email } });
-  }
-
-  return { getUserInfo, create, findByEmail };
+  return { ...base, getUserInfo };
 }

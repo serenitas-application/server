@@ -7,6 +7,7 @@ import { swaggerConfig } from './app/app.swagger.js';
 import { errorHandler } from './infrastructure/error-handler.js';
 import { StreamForLogger } from './infrastructure/logger.js';
 import { databaseProvider } from './infrastructure/db.js';
+import { appRepo } from './app/app.repo.js';
 
 export async function setupApplication() {
   const LOG_FOLDER_NAME = 'logs';
@@ -15,7 +16,8 @@ export async function setupApplication() {
   const streamForLogger = new StreamForLogger(LOG_DIR);
 
   const db = databaseProvider();
-  const services = appServices(db);
+  const repo = appRepo(db);
+  const services = appServices(repo);
   const guards = appGuards({ session: services.session });
 
   return {
