@@ -1,5 +1,5 @@
 export async function usersRoutes(app) {
-  const { user: userService } = app.services;
+  const { users: userService } = app.services;
   const { auth } = app.guards;
 
   app.route({

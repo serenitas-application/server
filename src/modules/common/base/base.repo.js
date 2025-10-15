@@ -11,8 +11,8 @@ export function baseRepo(repo) {
     return await repo.findUnique({ where: { id } });
   }
 
-  async function findOneByField(field) {
-    return await repo.findFirst({ where: { field } });
+  async function findOneByField(field, value) {
+    return await repo.findFirst({ where: { [field]: value } });
   }
 
   return { findOneById, create, update, findOneByField };
