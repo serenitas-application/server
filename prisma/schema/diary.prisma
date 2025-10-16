@@ -1,11 +1,11 @@
 model Diary {
-    id          Int       @id @default(autoincrement())
-    title       String
-    content     String
-    create_date DateTime  @default(now()) @map("create_date") @db.Timestamptz(6)
-    edit_date   DateTime? @map("edit_date") @db.Timestamptz(6)
-    isPrivate   Boolean   @default(false) @map("is_private")
-    userId      Int       @map("user_id")
+    id         Int       @id @default(autoincrement())
+    title      String
+    content    String
+    createDate DateTime  @default(now()) @map("create_date") @db.Timestamptz(6)
+    editDate   DateTime? @map("edit_date") @db.Timestamptz(6)
+    isPrivate  Boolean   @default(false) @map("is_private")
+    userId     Int       @map("user_id")
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
