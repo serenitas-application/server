@@ -1,7 +1,5 @@
 export function userService(repo) {
-  console.log(repo);
   async function getUserInfo(userId) {
-    console.log(userId);
     return await repo.getUserInfo(userId);
   }
 

@@ -1,13 +1,18 @@
 export function diaryService(repo) {
-  async function findAll(userId) {
-    const items = await repo.findMany({ where: { userId } });
+  async function findByDate(date, userId) {
+    const items = await repo.findByDate(date, userId);
     return items;
   }
 
+  async function getDiaryRecords(userId) {
+    const dates = await repo.findDiaryDates(userId);
+    return dates;
+  }
+
   async function create(payload, userId) {
-    const newItems = await repo.create({ data: { ...payload, userId } });
+    const newItems = await repo.create({ ...payload, userId });
     return newItems;
   }
 
-  return { findAll, create };
+  return { findByDate, create, getDiaryRecords };
 }

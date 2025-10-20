@@ -10,7 +10,19 @@ export async function diaryRoutes(app) {
     preHandler: auth.check,
     handler: async (req) => {
       const { userId } = req.session;
-      const result = await diary.findAll(userId);
+      const { date } = req.query;
+      const result = await diary.findByDate(date, userId);
+      return { data: result };
+    },
+  });
+
+  app.route({
+    method: 'GET',
+    url: '/records',
+    preHandler: auth.check,
+    handler: async (req) => {
+      const { userId } = req.session;
+      const result = await diary.getDiaryRecords(userId);
       return { data: result };
     },
   });
