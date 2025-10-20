@@ -9,7 +9,9 @@ export function diaryRepo(db) {
   async function findDiaryDates(userId) {
     return await db.$queryRaw`
     SELECT 
-      TO_CHAR(d.create_date, 'YYYY-MM-DD') AS "createDate",
+      TO_CHAR(
+        d.create_date AT TIME ZONE ${TIME_ZONE}, 'YYYY-MM-DD'
+      ) AS "createDate",
       d.is_private AS "isPrivate"
     FROM diaries d
     WHERE d.user_id = ${userId}

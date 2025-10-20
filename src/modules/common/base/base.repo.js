@@ -7,6 +7,10 @@ export function baseRepo(repo) {
     return await repo.update({ where: { id }, data });
   }
 
+  async function deleteOne(id) {
+    return await repo.delete({ where: { id } });
+  }
+
   async function findOneById(id) {
     return await repo.findUnique({ where: { id } });
   }
@@ -15,5 +19,5 @@ export function baseRepo(repo) {
     return await repo.findFirst({ where: { [field]: value } });
   }
 
-  return { findOneById, create, update, findOneByField };
+  return { findOneById, create, update, deleteOne, findOneByField };
 }

@@ -39,4 +39,29 @@ export async function diaryRoutes(app) {
       return { data: result };
     },
   });
+
+  app.route({
+    method: 'PATCH',
+    url: '/:id',
+    preHandler: auth.check,
+    schema: diarySchemes.create,
+    handler: async (req) => {
+      const payload = req.body;
+      const { userId } = req.session;
+      const { id } = req.params;
+      const result = await diary.update(Number(id), payload, userId);
+      return { data: result };
+    },
+  });
+
+  app.route({
+    method: 'DELETE',
+    url: '/:id',
+    preHandler: auth.check,
+    handler: async (req) => {
+      const { id } = req.params;
+      const result = await diary.deleteOne(Number(id));
+      return { data: result };
+    },
+  });
 }
