@@ -6,7 +6,7 @@ import { appGuards } from './app/app.guards.js';
 import { swaggerConfig } from './app/app.swagger.js';
 import { errorHandler } from './infrastructure/error-handler.js';
 import { StreamForLogger } from './infrastructure/logger.js';
-import { databaseProvider } from './infrastructure/db.js';
+import { databaseProvider } from './infrastructure/db/db.js';
 import { appRepo } from './app/app.repo.js';
 
 export async function setupApplication() {
