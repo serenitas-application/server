@@ -3,7 +3,7 @@ const create = {
     type: 'object',
     required: ['title', 'content'],
     properties: {
-      title: { type: 'string' },
+      title: { type: 'string', format: 'date-time' },
       content: { type: 'string' },
       isPrivate: { type: 'boolean' },
     },
