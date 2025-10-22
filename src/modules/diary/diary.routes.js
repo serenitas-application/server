@@ -44,7 +44,7 @@ export async function diaryRoutes(app) {
     method: 'PATCH',
     url: '/:id',
     preHandler: auth.check,
-    schema: diarySchemes.create,
+    schema: diarySchemes.update,
     handler: async (req) => {
       const payload = req.body;
       const { userId } = req.session;
