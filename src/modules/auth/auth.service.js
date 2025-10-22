@@ -1,10 +1,10 @@
 import { crypto } from '#common/crypto/crypto.js';
 import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(userService, sessionStore) {
+export function authService(usersService, sessionStore) {
   async function login(payload) {
     const { email, password, userAgent, ipAddress } = payload;
-    const currentUser = await userService.findByEmail(email);
+    const currentUser = await usersService.findByEmail(email);
     if (!currentUser) {
       throw new AppError(
         ErrorCode.INVALID_CREDENTIALS,
@@ -31,13 +31,13 @@ export function authService(userService, sessionStore) {
 
   async function registration(payload) {
     const { email, username, password } = payload;
-    const registratedUser = await userService.findByEmail(email);
+    const registratedUser = await usersService.findByEmail(email);
     if (registratedUser) {
       throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
     }
 
     const hashPassword = await crypto.hash(password);
-    const result = await userService.create({
+    const result = await usersService.create({
       email,
       password: hashPassword,
       username,

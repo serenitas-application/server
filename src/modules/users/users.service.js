@@ -1,17 +1,15 @@
-export function userService(db) {
-  const usersRepo = db['user'];
-
+export function userService(repo) {
   async function getUserInfo(userId) {
-    return await usersRepo.findUnique({ where: { id: userId } });
+    return await repo.getUserInfo(userId);
   }
 
   async function create(payload) {
-    const user = await usersRepo.create({ data: payload });
+    const user = await repo.create(payload);
     return user;
   }
 
   async function findByEmail(email) {
-    return await usersRepo.findUnique({ where: { email } });
+    return await repo.findByEmail(email);
   }
 
   return { create, findByEmail, getUserInfo };

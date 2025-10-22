@@ -1,8 +1,6 @@
 import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function pageGroupsService(db) {
-  const repo = db['pageGroup'];
-
+export function pageGroupsService(repo) {
   async function findAll(query, userId) {
     const pageGroups = await repo.findMany({
       where: { userId },
