@@ -1,7 +1,7 @@
 import { baseRepo } from '#modules/common/base/base.repo.js';
 
-export function pageGroupsRepo({ db, handleDatabaseError }) {
-  const repo = db['pageGroup'];
+export function mailerRepo({ db, handleDatabaseError }) {
+  const repo = db['emailVerifyToken'];
   const base = baseRepo(repo, handleDatabaseError);
 
   return { ...base };

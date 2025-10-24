@@ -2,7 +2,7 @@ import { baseRepo } from '#modules/common/base/base.repo.js';
 
 export function usersRepo({ db, handleDatabaseError }) {
   const repo = db['user'];
-  const base = baseRepo(repo);
+  const base = baseRepo(repo, handleDatabaseError);
 
   async function getUserInfo(userId) {
     try {
