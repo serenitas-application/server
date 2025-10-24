@@ -57,7 +57,7 @@ async function startServer() {
   const startedOn = await server.listen({
     port: config.port,
   });
-  const startesAt = new Date().toLocaleString();
+  const startesAt = new Date().toISOString();
   logger.log(`Application runs on ${startedOn}, at ${startesAt}`);
 }
 

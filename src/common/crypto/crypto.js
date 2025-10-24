@@ -18,6 +18,6 @@ const verify = (hashedValue, value) =>
     });
   });
 
-const generate = (id) => `TEST${id}TEST`;
+const getRandomId = () => nodeCrypto.randomUUID();
 
-export const crypto = { hash, verify, generate };
+export const crypto = { hash, verify, getRandomId };

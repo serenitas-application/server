@@ -1,7 +1,7 @@
 import { crypto } from '#common/crypto/crypto.js';
 import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(usersService, sessionStore) {
+export function authService(usersService, sessionStore, mailerService) {
   async function login(payload) {
     const { email, password, userAgent, ipAddress } = payload;
     const currentUser = await usersService.findByEmail(email);
@@ -43,6 +43,9 @@ export function authService(usersService, sessionStore) {
       password: hashPassword,
       username,
     });
+
+    await mailerService.sendVerifyMail(email, result.id, 'en');
+
     return { id: result.id };
   }
 

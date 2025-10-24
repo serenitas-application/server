@@ -16,8 +16,8 @@ export function mailerProvider(config, log) {
       to: params.to,
       from: params.from,
       subject: params.subject,
-      html: params.html ? params.content : undefined,
-      text: params.html ? undefined : params.content,
+      html: params.html ?? undefined,
+      text: params.text ?? undefined,
     };
 
     const result = await transport

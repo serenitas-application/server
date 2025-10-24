@@ -13,8 +13,14 @@ export async function setupApplication(logger) {
     logger,
   );
   const repo = appRepo(db);
-  const services = appServices({ repo, sessionStorage, mailer });
-  const guards = appGuards({ session: services.session });
+  const services = appServices({
+    repo,
+    sessionStorage,
+    mailer,
+    logger,
+    config: appConfig,
+  });
+  const guards = appGuards({ session: sessionStorage });
 
   return {
     services,

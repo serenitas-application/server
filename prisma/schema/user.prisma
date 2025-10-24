@@ -6,9 +6,10 @@ model User {
     createDate DateTime @default(now()) @map("created_date") @db.Timestamptz(6)
     verified   Boolean  @default(false)
 
-    groups  PageGroup[]
-    mood    Mood[]
-    diaries Diary[]
+    groups           PageGroup[]
+    mood             Mood[]
+    diaries          Diary[]
+    emailVerifyToken EmailVerifyToken[]
 
     @@map("users")
 }
