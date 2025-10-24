@@ -5,9 +5,16 @@ export function usersRepo({ db, handleDatabaseError }) {
   const base = baseRepo(repo);
 
   async function getUserInfo(userId) {
-    return await repo
-      .findUniqueOrThrow({ where: { id: userId } })
-      .catch((e) => handleDatabaseError(e));
+    try {
+      const user = await db.$queryRaw`
+        SELECT id, email, username, created_date AS "createdDate"
+        FROM users
+        WHERE id = ${userId}
+      `;
+      return user[0];
+    } catch (err) {
+      handleDatabaseError(err);
+    }
   }
 
   async function findByEmail(email) {
