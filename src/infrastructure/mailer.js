@@ -1,16 +1,35 @@
 import nodemailer from 'nodemailer';
 
-export function mailerProvider(config) {
-  const transporter = nodemailer.createTransport({
-    host: config.SMTP_HOST,
-    port: Number(config.SMTP_PORT),
-    secure: config.SMTP_SECURE === 'true',
+export function mailerProvider(config, log) {
+  const transport = nodemailer.createTransport({
+    host: config.host,
+    port: Number(config.port),
+    secure: true,
     auth: {
-      user: config.SMTP_USER,
-      pass: config.SMTP_PASS,
+      user: config.user,
+      pass: config.pass,
     },
-    pool: true,
   });
 
-  return { transporter };
+  async function sendMail(params) {
+    const mail = {
+      to: params.to,
+      from: params.from,
+      subject: params.subject,
+      html: params.html ? params.content : undefined,
+      text: params.html ? undefined : params.content,
+    };
+
+    const result = await transport
+      .sendMail(mail)
+      .catch((err) => handleError(err));
+
+    return result?.messageId;
+  }
+
+  function handleError(error) {
+    log.error(error);
+  }
+
+  return { sendMail };
 }
