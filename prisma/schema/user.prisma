@@ -4,6 +4,7 @@ model User {
     username   String
     password   String
     createDate DateTime @default(now()) @map("created_date") @db.Timestamptz(6)
+    verified   Boolean  @default(false)
 
     groups  PageGroup[]
     mood    Mood[]

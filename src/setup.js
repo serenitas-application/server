@@ -1,23 +1,16 @@
-import path from 'node:path';
 import { appConfig } from './app/app.config.js';
 import { appRoutes } from './app/app.routes.js';
 import { appServices } from './app/app.services.js';
 import { appGuards } from './app/app.guards.js';
 import { swaggerConfig } from './app/app.swagger.js';
 import { errorHandler } from './infrastructure/error-handler.js';
-import { StreamForLogger } from './infrastructure/logger.js';
-import { databaseProvider } from './infrastructure/db/db.js';
 import { appRepo } from './app/app.repo.js';
+import { appInfrastructure } from './app/app.infrastructure.js';
 
 export async function setupApplication() {
-  const LOG_FOLDER_NAME = 'logs';
-
-  const LOG_DIR = path.resolve(process.cwd(), LOG_FOLDER_NAME);
-  const streamForLogger = new StreamForLogger(LOG_DIR);
-
-  const db = databaseProvider();
+  const { db, log, sessionStorage, mailer } = appInfrastructure(appConfig);
   const repo = appRepo(db);
-  const services = appServices(repo);
+  const services = appServices({ repo, sessionStorage, mailer });
   const guards = appGuards({ session: services.session });
 
   return {
@@ -27,6 +20,6 @@ export async function setupApplication() {
     errorHandler,
     config: appConfig,
     swagger: swaggerConfig,
-    log: streamForLogger,
+    log,
   };
 }

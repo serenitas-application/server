@@ -21,4 +21,7 @@ export const appConfig = {
     preflightContinue: false,
     optionsSuccessStatus: 204,
   },
+  mailer: {
+    smtpHost: process.env.SMTP_HOST,
+  },
 };

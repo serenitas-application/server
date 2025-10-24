@@ -2,7 +2,7 @@ import { AUTH_SESSION_COOKIE_NAME } from './consts/index.js';
 import { authSchemas } from './schemas/auth.schemas.js';
 
 export async function authRoutes(app) {
-  const { auth: authService, session } = app.services;
+  const { auth: authService } = app.services;
   const { auth } = app.guards;
 
   app.route({
@@ -14,7 +14,7 @@ export async function authRoutes(app) {
       const ip = req.ip;
       const userAgent = req.headers['user-agent'] || 'n/a';
 
-      const sessionId = await authService.login({
+      const { sessionId, maxAge } = await authService.login({
         email,
         password,
         ipAddress: ip,
@@ -24,7 +24,7 @@ export async function authRoutes(app) {
       reply.setCookie(AUTH_SESSION_COOKIE_NAME, sessionId, {
         httpOnly: true,
         path: '/',
-        maxAge: session.getSessionAgeInSeconds(),
+        maxAge,
       });
 
       return { data: sessionId };
@@ -53,6 +53,7 @@ export async function authRoutes(app) {
     handler: async (req, reply) => {
       const { sessionId } = req.session;
       await authService.logout(sessionId);
+
       reply.clearCookie(AUTH_SESSION_COOKIE_NAME, {
         path: '/',
         httpOnly: true,

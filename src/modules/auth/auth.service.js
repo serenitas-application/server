@@ -19,6 +19,7 @@ export function authService(usersService, sessionStore) {
       );
     }
 
+    const maxAge = sessionStore.getSessionAgeInSeconds();
     const sessionId = await sessionStore.create({
       userId: currentUser.id,
       userAgent,
@@ -26,7 +27,7 @@ export function authService(usersService, sessionStore) {
       loginDate: new Date(),
     });
 
-    return sessionId;
+    return { sessionId, maxAge };
   }
 
   async function registration(payload) {
