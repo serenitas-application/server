@@ -8,18 +8,19 @@ import { appRepo } from './app/app.repo.js';
 import { appInfrastructure } from './app/app.infrastructure.js';
 
 export async function setupApplication(logger) {
-  const { db, log, sessionStorage, mailer } = appInfrastructure(
+  const { db, log, sessionStore, tokensStore, mailer } = appInfrastructure(
     appConfig,
     logger,
   );
   const repo = appRepo(db);
   const services = appServices({
     repo,
-    sessionStorage,
+    sessionStore,
+    tokensStore,
     mailer,
     logger,
   });
-  const guards = appGuards({ session: sessionStorage });
+  const guards = appGuards({ session: sessionStore });
 
   return {
     services,

@@ -1,9 +1,12 @@
 import { crypto } from '#common/crypto/crypto.js';
 import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(usersService, mailerService, sessionStore) {
-  const mailTokens = new Map();
-
+export function authService(
+  usersService,
+  mailerService,
+  sessionStore,
+  tokensStore,
+) {
   async function login(payload) {
     const { email, password, userAgent, ipAddress } = payload;
     const currentUser = await usersService.findByEmail(email);
@@ -55,17 +58,17 @@ export function authService(usersService, mailerService, sessionStore) {
       throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
     }
 
-    await mailTokens.delete(email);
+    await tokensStore.delete(email);
 
     const token = crypto.generateToken(16);
     const hashedToken = await crypto.hash(token);
 
-    await mailTokens.set(email, hashedToken);
+    await tokensStore.create(email, hashedToken);
     await mailerService.sendVerifyMail({ email, token }, lang);
   }
 
   async function verifyToken({ email, token }) {
-    const storageToken = await mailTokens.get(email);
+    const storageToken = await tokensStore.get(email);
     const isTokenValid = await crypto.verify(storageToken, token);
 
     if (!isTokenValid) {
@@ -75,7 +78,7 @@ export function authService(usersService, mailerService, sessionStore) {
       );
     }
 
-    await mailTokens.delete(email);
+    await tokensStore.delete(email);
     return true;
   }
 

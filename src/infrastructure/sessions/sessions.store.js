@@ -1,8 +1,10 @@
+import { crypto } from '#common/crypto/crypto.js';
+
 export class SessionStore {
   #sessions = new Map();
 
   async create(payload) {
-    const sessionId = this.#generateSessionId();
+    const sessionId = crypto.getRandomId();
     this.#sessions.set(sessionId, payload);
     return sessionId;
   }
@@ -13,10 +15,6 @@ export class SessionStore {
 
   async delete(sessionId) {
     this.#sessions.delete(sessionId);
-  }
-
-  #generateSessionId() {
-    return crypto.randomUUID();
   }
 
   getSessionAgeInSeconds() {

@@ -7,7 +7,8 @@ import { mailerService } from '#modules/mailer/mailer.service.js';
 
 export function appServices({
   repo,
-  sessionStorage,
+  sessionStore,
+  tokensStore,
   mailer: mailerProvider,
   logger,
 }) {
@@ -20,10 +21,10 @@ export function appServices({
 
   const users = userService(usersRepo);
   const mailer = mailerService(mailerProvider, logger);
-  const auth = authService(users, mailer, sessionStorage);
+  const auth = authService(users, mailer, sessionStore, tokensStore);
   const diary = diaryService(diaryRepo);
   const pageGroups = pageGroupsService(pageGroupsRepo);
   const pages = pagesService(pagesRepo);
 
-  return { users, auth, diary, pages, pageGroups, session: sessionStorage };
+  return { users, auth, diary, pages, pageGroups, session: sessionStore };
 }
