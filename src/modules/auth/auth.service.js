@@ -1,5 +1,9 @@
 import { crypto } from '#common/crypto/crypto.js';
-import { AppError, ErrorCode } from '#common/app-error/app-error.js';
+import {
+  AppError,
+  ErrorCode,
+  ErrorDetailsCode,
+} from '#common/app-error/app-error.js';
 
 export function authService(usersService, sessionStore, mailerService) {
   async function login(payload) {
@@ -16,6 +20,14 @@ export function authService(usersService, sessionStore, mailerService) {
       throw new AppError(
         ErrorCode.INVALID_CREDENTIALS,
         'Wrong email or password',
+      );
+    }
+
+    if (!currentUser.verified) {
+      throw new AppError(
+        ErrorCode.INVALID_CREDENTIALS,
+        'Account is not verified',
+        ErrorDetailsCode.NOT_VERIFIED,
       );
     }
 

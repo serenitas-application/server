@@ -1,3 +1,7 @@
+export declare const ErrorDetailsCode: {
+  readonly NOT_VERIFIED: '01';
+};
+
 export declare const ErrorCode: {
   readonly NOT_ENOUGH_PERMISSIONS: 'NOT_ENOUGH_PERMISSIONS';
   readonly INVALID_CREDENTIALS: 'INVALID_CREDENTIALS';
@@ -15,8 +19,9 @@ export type ErrorCodeValue = (typeof ErrorCode)[ErrorCodeKey];
 export declare class AppError extends Error {
   readonly code: ErrorCodeValue;
   readonly message: string;
+  readonly details: ErrorDetailsCode;
 
-  constructor(code: ErrorCodeValue, message: string);
+  constructor(code: ErrorCodeValue, message: string, details: ErrorDetailsCode);
 
   toHttpCode(): number;
 }
