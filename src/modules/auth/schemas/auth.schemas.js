@@ -5,7 +5,7 @@ const login = {
     type: 'object',
     required: ['email', 'password'],
     properties: {
-      email: { type: 'string', format: 'email', minLength: 5, maxLength: 100 },
+      email: { type: 'string', format: 'email', minLength: 5 },
       password: { type: 'string', minLength: 8 },
     },
   },
@@ -33,7 +33,7 @@ const sendToken = {
     type: 'object',
     required: ['email'],
     properties: {
-      email: { type: 'string', format: 'email', minLength: 5, maxLength: 100 },
+      email: { type: 'string', format: 'email', minLength: 5 },
       lang: { type: 'string' },
     },
   },
@@ -44,7 +44,7 @@ const verifyToken = {
     type: 'object',
     required: ['email', 'token'],
     properties: {
-      email: { type: 'string', format: 'email', minLength: 5, maxLength: 100 },
+      email: { type: 'string', format: 'email', minLength: 5 },
       token: { type: 'string' },
     },
   },
