@@ -1,11 +1,9 @@
 import { crypto } from '#common/crypto/crypto.js';
-import {
-  AppError,
-  ErrorCode,
-  ErrorDetailsCode,
-} from '#common/app-error/app-error.js';
+import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(usersService, sessionStore, mailerService) {
+export function authService(usersService, mailerService, sessionStore) {
+  const mailTokens = new Map();
+
   async function login(payload) {
     const { email, password, userAgent, ipAddress } = payload;
     const currentUser = await usersService.findByEmail(email);
@@ -20,14 +18,6 @@ export function authService(usersService, sessionStore, mailerService) {
       throw new AppError(
         ErrorCode.INVALID_CREDENTIALS,
         'Wrong email or password',
-      );
-    }
-
-    if (!currentUser.verified) {
-      throw new AppError(
-        ErrorCode.INVALID_CREDENTIALS,
-        'Account is not verified',
-        ErrorDetailsCode.NOT_VERIFIED,
       );
     }
 
@@ -56,14 +46,36 @@ export function authService(usersService, sessionStore, mailerService) {
       username,
     });
 
-    await mailerService.sendVerifyMail(email, result.id, 'en');
-
     return { id: result.id };
   }
 
-  async function verify(token) {
-    const userId = await mailerService.validateToken(token);
-    await usersService.verifyAccount(userId);
+  async function sendToken({ email, lang }) {
+    const registratedUser = await usersService.findByEmail(email);
+    if (registratedUser) {
+      throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
+    }
+
+    await mailTokens.delete(email);
+
+    const token = crypto.generateToken(16);
+    const hashedToken = await crypto.hash(token);
+
+    await mailTokens.set(email, hashedToken);
+    await mailerService.sendVerifyMail({ email, token }, lang);
+  }
+
+  async function verifyToken({ email, token }) {
+    const storageToken = await mailTokens.get(email);
+    const isTokenValid = await crypto.verify(storageToken, token);
+
+    if (!isTokenValid) {
+      throw new AppError(
+        ErrorCode.INVALID_STATE,
+        'Wrong email code, please try again',
+      );
+    }
+
+    await mailTokens.delete(email);
     return true;
   }
 
@@ -71,5 +83,5 @@ export function authService(usersService, sessionStore, mailerService) {
     await sessionStore.delete(sessionId);
   }
 
-  return { login, registration, logout, verify };
+  return { login, registration, logout, sendToken, verifyToken };
 }

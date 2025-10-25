@@ -1,7 +1,3 @@
-export const ErrorDetailsCode = {
-  NOT_VERIFIED: '01',
-};
-
 export const ErrorCode = {
   NOT_ENOUGH_PERMISSIONS: 'NOT_ENOUGH_PERMISSIONS',
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
@@ -25,11 +21,10 @@ const HttpCodeMap = {
 };
 
 export class AppError extends Error {
-  constructor(code, message, details = '') {
+  constructor(code, message) {
     super(message);
     this.name = 'AppError';
     this.code = code;
-    this.details = details;
   }
 
   toHttpCode() {

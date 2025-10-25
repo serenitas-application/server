@@ -1,3 +1,4 @@
+import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 import nodemailer from 'nodemailer';
 
 export function mailerProvider(config, log) {
@@ -29,6 +30,12 @@ export function mailerProvider(config, log) {
 
   function handleError(error) {
     log.error(error);
+    if (error?.message === 'No recipients defined') {
+      throw new AppError(
+        ErrorCode.INVALID_STATE,
+        'Email address not specified',
+      );
+    }
   }
 
   return { sendMail };

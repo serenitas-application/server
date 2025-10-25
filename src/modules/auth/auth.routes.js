@@ -47,18 +47,24 @@ export async function authRoutes(app) {
   });
 
   app.route({
-    method: 'GET',
-    url: '/verify-email',
-    schema: {
-      querystring: {
-        type: 'object',
-        required: ['token'],
-        properties: { token: { type: 'string', minLength: 10 } },
-      },
-    },
+    method: 'POST',
+    url: '/send-token',
+    schema: authSchemas.sendToken,
     handler: async (req) => {
-      const { token } = req.query;
-      await authService.verify(token);
+      const { email, lang } = req.body;
+      await authService.sendToken({ email, lang });
+
+      return { ok: true };
+    },
+  });
+
+  app.route({
+    method: 'POST',
+    url: '/verify-token',
+    schema: authSchemas.verifyToken,
+    handler: async (req) => {
+      const { email, token } = req.body;
+      await authService.verifyToken({ email, token });
 
       return { ok: true };
     },

@@ -18,7 +18,6 @@ export async function setupApplication(logger) {
     sessionStorage,
     mailer,
     logger,
-    config: appConfig,
   });
   const guards = appGuards({ session: sessionStorage });
 

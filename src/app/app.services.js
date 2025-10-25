@@ -10,24 +10,17 @@ export function appServices({
   sessionStorage,
   mailer: mailerProvider,
   logger,
-  config,
 }) {
   const {
     users: usersRepo,
     diary: diaryRepo,
     pages: pagesRepo,
-    mailer: mailerRepo,
     pageGroups: pageGroupsRepo,
   } = repo;
 
-  const mailer = mailerService(
-    mailerRepo,
-    mailerProvider,
-    logger,
-    config.cors.origin,
-  );
-  const users = userService(usersRepo, mailer);
-  const auth = authService(users, sessionStorage, mailer);
+  const users = userService(usersRepo);
+  const mailer = mailerService(mailerProvider, logger);
+  const auth = authService(users, mailer, sessionStorage);
   const diary = diaryService(diaryRepo);
   const pageGroups = pageGroupsService(pageGroupsRepo);
   const pages = pagesService(pagesRepo);
