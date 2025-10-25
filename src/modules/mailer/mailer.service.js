@@ -1,18 +1,14 @@
 import { readFileAsync } from '#common/file.js';
 
 export function mailerService(mailer, logger) {
-  async function sendVerifyMail(payload, lang = 'en') {
+  async function sendWelcomeMail(payload, lang = 'en') {
     const fileName = `welcome-${lang}.html`;
 
-    return await sendMail(fileName, payload);
-  }
-
-  async function sendMail(fileName, payload) {
     let template = await readFileAsync('src/static', fileName).catch((err) => {
       logger.error(err);
       return null;
     });
-    template = template.replace(/{{token}}/g, payload.token);
+    template = template.replace(/{{username}}/g, payload.username);
 
     const mailObj = {
       from: 'Serenitas',
@@ -24,5 +20,24 @@ export function mailerService(mailer, logger) {
     return await mailer.sendMail(mailObj);
   }
 
-  return { sendVerifyMail };
+  async function sendVerifyMail(payload, lang = 'en') {
+    const fileName = `verify-${lang}.html`;
+
+    let template = await readFileAsync('src/static', fileName).catch((err) => {
+      logger.error(err);
+      return null;
+    });
+    template = template.replace(/{{token}}/g, payload.token);
+
+    const mailObj = {
+      from: 'Serenitas',
+      to: payload.email,
+      subject: 'Your Serenitas confirmation code is inside ✨',
+      html: template,
+    };
+
+    return await mailer.sendMail(mailObj);
+  }
+
+  return { sendVerifyMail, sendWelcomeMail };
 }

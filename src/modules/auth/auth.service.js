@@ -49,6 +49,8 @@ export function authService(
       username,
     });
 
+    await mailerService.sendWelcomeMail({ username, email }, 'en');
+
     return { id: result.id };
   }
 
