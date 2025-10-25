@@ -47,6 +47,24 @@ export async function authRoutes(app) {
   });
 
   app.route({
+    method: 'GET',
+    url: '/verify-email',
+    schema: {
+      querystring: {
+        type: 'object',
+        required: ['token'],
+        properties: { token: { type: 'string', minLength: 10 } },
+      },
+    },
+    handler: async (req) => {
+      const { token } = req.query;
+      await authService.verify(token);
+
+      return { ok: true };
+    },
+  });
+
+  app.route({
     method: 'POST',
     url: '/logout',
     preHandler: auth.check,

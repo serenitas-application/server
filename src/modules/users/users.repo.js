@@ -18,8 +18,8 @@ export function usersRepo({ db, handleDatabaseError }) {
   }
 
   async function findByEmail(email) {
-    return await base
-      .findOneByField('email', email)
+    return await repo
+      .findUnique({ where: { email } })
       .catch((e) => handleDatabaseError(e));
   }
 

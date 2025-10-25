@@ -1,9 +1,10 @@
+import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 import { crypto } from '#common/crypto/crypto.js';
 import { readFileAsync } from '#common/file.js';
 
 export function mailerService(repo, mailer, logger, origin) {
   const EXPIRE_TIME = 24 * 3600 * 1000; // 24h
-  const VERIFY_API_PATH = '/auth/verify-email';
+  const VERIFY_API_PATH = '/api/auth/verify-email';
   const MAIL_FROM = 'Serenitas';
 
   async function sendVerifyMail(email, userId, lang = 'en') {
@@ -40,5 +41,19 @@ export function mailerService(repo, mailer, logger, origin) {
     return await repo.create(payload);
   }
 
-  return { sendVerifyMail };
+  async function validateToken(token) {
+    const currentDate = new Date().toISOString();
+    const tokenInfo = await repo.findToken(token);
+    if (!tokenInfo || tokenInfo?.createdAt < currentDate) {
+      throw new AppError(
+        ErrorCode.INVALID_STATE,
+        'Verification token has expired. Please request a new one. ',
+      );
+    }
+
+    await repo.deleteOne(tokenInfo.id);
+    return tokenInfo.userId;
+  }
+
+  return { sendVerifyMail, validateToken };
 }

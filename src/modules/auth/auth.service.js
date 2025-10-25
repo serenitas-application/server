@@ -49,9 +49,15 @@ export function authService(usersService, sessionStore, mailerService) {
     return { id: result.id };
   }
 
+  async function verify(token) {
+    const userId = await mailerService.validateToken(token);
+    await usersService.verifyAccount(userId);
+    return true;
+  }
+
   async function logout(sessionId) {
     await sessionStore.delete(sessionId);
   }
 
-  return { login, registration, logout };
+  return { login, registration, logout, verify };
 }

@@ -20,8 +20,6 @@ export function appServices({
     pageGroups: pageGroupsRepo,
   } = repo;
 
-  console.log(mailerRepo);
-
   const mailer = mailerService(
     mailerRepo,
     mailerProvider,
