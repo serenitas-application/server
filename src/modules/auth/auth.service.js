@@ -1,7 +1,12 @@
 import { crypto } from '#common/crypto/crypto.js';
 import { AppError, ErrorCode } from '#common/app-error/app-error.js';
 
-export function authService(usersService, sessionStore) {
+export function authService(
+  usersService,
+  mailerService,
+  sessionStore,
+  tokensStore,
+) {
   async function login(payload) {
     const { email, password, userAgent, ipAddress } = payload;
     const currentUser = await usersService.findByEmail(email);
@@ -19,6 +24,7 @@ export function authService(usersService, sessionStore) {
       );
     }
 
+    const maxAge = sessionStore.getSessionAgeInSeconds();
     const sessionId = await sessionStore.create({
       userId: currentUser.id,
       userAgent,
@@ -26,7 +32,7 @@ export function authService(usersService, sessionStore) {
       loginDate: new Date(),
     });
 
-    return sessionId;
+    return { sessionId, maxAge };
   }
 
   async function registration(payload) {
@@ -42,12 +48,45 @@ export function authService(usersService, sessionStore) {
       password: hashPassword,
       username,
     });
+
+    await mailerService.sendWelcomeMail({ username, email }, 'en');
+
     return { id: result.id };
+  }
+
+  async function sendToken({ email, lang }) {
+    const registratedUser = await usersService.findByEmail(email);
+    if (registratedUser) {
+      throw new AppError(ErrorCode.CONFLICT, 'Current account already exist');
+    }
+
+    await tokensStore.delete(email);
+
+    const token = crypto.generateToken(16);
+    const hashedToken = await crypto.hash(token);
+
+    await tokensStore.create(email, hashedToken);
+    await mailerService.sendVerifyMail({ email, token }, lang);
+  }
+
+  async function verifyToken({ email, token }) {
+    const storageToken = await tokensStore.get(email);
+    const isTokenValid = await crypto.verify(storageToken, token);
+
+    if (!isTokenValid) {
+      throw new AppError(
+        ErrorCode.INVALID_STATE,
+        'Wrong email code, please try again',
+      );
+    }
+
+    await tokensStore.delete(email);
+    return true;
   }
 
   async function logout(sessionId) {
     await sessionStore.delete(sessionId);
   }
 
-  return { login, registration, logout };
+  return { login, registration, logout, sendToken, verifyToken };
 }

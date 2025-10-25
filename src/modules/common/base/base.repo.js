@@ -21,11 +21,5 @@ export function baseRepo(repo, handleDatabaseError) {
       .catch((e) => handleDatabaseError(e));
   }
 
-  async function findOneByField(field, value) {
-    return await repo
-      .findFirst({ where: { [field]: value } })
-      .catch((e) => handleDatabaseError(e));
-  }
-
-  return { findOneById, create, update, deleteOne, findOneByField };
+  return { findOneById, create, update, deleteOne };
 }

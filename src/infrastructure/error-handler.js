@@ -5,6 +5,7 @@ function api(error, request, reply) {
     reply.status(error.toHttpCode()).send({
       code: error.code,
       message: error.message,
+      details: error.details,
     });
   } else {
     this.log.error(

@@ -2,7 +2,7 @@ import { baseRepo } from '#modules/common/base/base.repo.js';
 
 export function diaryRepo({ db, handleDatabaseError }) {
   const repo = db['diary'];
-  const base = baseRepo(repo);
+  const base = baseRepo(repo, handleDatabaseError);
 
   const TIME_ZONE = 'Europe/Kyiv';
 

@@ -6,8 +6,10 @@
   "main": "main.js",
   "type": "module",
   "imports": {
+    "#infrastructure/*": "./src/infrastructure/*",
     "#modules/*": "./src/modules/*",
-    "#common/*": "./src/common/*"
+    "#common/*": "./src/common/*",
+    "#static/*": "./src/static/*"
   },
   "scripts": {
     "start": "node src/main.js",
@@ -30,6 +32,7 @@
     "dotenv": "^17.2.2",
     "fastify": "^5.5.0",
     "fastify-plugin": "^5.0.1",
+    "nodemailer": "^7.0.10",
     "pg": "^8.16.3"
   },
   "devDependencies": {

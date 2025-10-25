@@ -3,12 +3,23 @@ CREATE TABLE "public"."diaries" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "date" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "create_date" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "edit_date" TIMESTAMPTZ(6),
     "is_private" BOOLEAN NOT NULL DEFAULT false,
     "user_id" INTEGER NOT NULL,
-    "mood_id" INTEGER NOT NULL,
 
     CONSTRAINT "diaries_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."email_verify_token" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires_at" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "email_verify_token_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -43,7 +54,7 @@ CREATE TABLE "public"."page_templates" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."journals" (
+CREATE TABLE "public"."pages" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
@@ -54,7 +65,7 @@ CREATE TABLE "public"."journals" (
     "updated_date" TIMESTAMPTZ(6),
     "group_id" INTEGER NOT NULL,
 
-    CONSTRAINT "journals_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "pages_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -72,7 +83,13 @@ CREATE TABLE "public"."users" (
 CREATE INDEX "diaries_user_id_idx" ON "public"."diaries"("user_id");
 
 -- CreateIndex
-CREATE INDEX "diaries_mood_id_idx" ON "public"."diaries"("mood_id");
+CREATE UNIQUE INDEX "email_verify_token_token_key" ON "public"."email_verify_token"("token");
+
+-- CreateIndex
+CREATE INDEX "email_verify_token_userId_idx" ON "public"."email_verify_token"("userId");
+
+-- CreateIndex
+CREATE INDEX "email_verify_token_expires_at_idx" ON "public"."email_verify_token"("expires_at");
 
 -- CreateIndex
 CREATE INDEX "moods_user_id_idx" ON "public"."moods"("user_id");
@@ -81,7 +98,7 @@ CREATE INDEX "moods_user_id_idx" ON "public"."moods"("user_id");
 CREATE INDEX "page_groups_user_id_idx" ON "public"."page_groups"("user_id");
 
 -- CreateIndex
-CREATE INDEX "journals_group_id_idx" ON "public"."journals"("group_id");
+CREATE INDEX "pages_group_id_idx" ON "public"."pages"("group_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "public"."users"("email");
@@ -90,13 +107,10 @@ CREATE UNIQUE INDEX "users_email_key" ON "public"."users"("email");
 ALTER TABLE "public"."diaries" ADD CONSTRAINT "diaries_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."diaries" ADD CONSTRAINT "diaries_mood_id_fkey" FOREIGN KEY ("mood_id") REFERENCES "public"."moods"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "public"."moods" ADD CONSTRAINT "moods_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."page_groups" ADD CONSTRAINT "page_groups_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."journals" ADD CONSTRAINT "journals_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "public"."page_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."pages" ADD CONSTRAINT "pages_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "public"."page_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
