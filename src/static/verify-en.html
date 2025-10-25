@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Serenitas!</title>
+    <style>
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* Font import for better fidelity (Gmail support, but fallback is important) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Responsive adjustments for mobile */
+        @media only screen and (max-width: 600px) {
+            .main-content {
+                width: 100% !important;
+                min-width: 100% !important;
+            }
+
+            .content-padding {
+                padding: 20px 15px !important;
+            }
+
+            .token-box {
+                padding: 15px !important;
+            }
+
+            .logo-text {
+                font-size: 20px !important;
+            }
+
+            .tagline {
+                font-size: 14px !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    style="margin: 0; padding: 0; background-color: #f8f7fa; font-family: 'Inter', Helvetica, Arial, sans-serif; line-height: 1.6;">
+
+    <!-- Outer wrapper table for background color and centering -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+        style="border-collapse: collapse; background-color: #f8f7fa;">
+        <tr>
+            <td align="center" style="padding: 30px 0;">
+
+                <!-- Main content container (max-width 600px) -->
+                <table class="main-content" border="0" cellpadding="0" cellspacing="0" width="600"
+                    style="border-collapse: collapse; background-color: #ffffff; border-radius: 12px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);">
+
+                    <!-- Header Section (Logo and Tagline) -->
+                    <tr>
+                        <td align="left" style="padding: 30px 40px 20px; border-bottom: 1px solid #f0f0f5;">
+                            <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                <tr>
+                                    <td valign="middle" style="padding-right: 10px;">
+                                        <!-- Serenitas Logo (adjust path or embed as base64 if possible for production) --><img
+                                            src="https://res.cloudinary.com/dqxcqt1ty/image/upload/v1761403691/favicon_sj3pu0.png"
+                                            alt="Serenitas Logo" width="52" height="52"
+                                            style="display: block; border-radius: 4px;">
+                                    </td>
+                                    <td valign="middle">
+                                        <h1 class="logo-text"
+                                            style="margin: 0; font-size: 24px; color: #333333; font-weight: 600;">
+                                            Serenitas</h1>
+                                        <p class="tagline"
+                                            style="margin: 0; font-size: 15px; color: #666666; font-weight: 400;">Your
+                                            private space for clarity</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Body Content -->
+                    <tr>
+                        <td class="content-padding" style="padding: 20px 40px; color: #333333; font-size: 16px;">
+
+                            <p style="margin: 0 0 20px;">
+                                Thank you for starting your registration with <span style="color: #8E7CC3; font-weight: 700;">Serenitas</span>!
+                            </p>
+
+                            <p style="margin: 0 0 25px;">
+                                To continue, please confirm your email address by entering the code below in the app:
+                                <!-- We’re excited to have you on board. To get started, please confirm your email address using the code below -->
+                            </p>
+
+                            <!-- Token Callout Section (Highlighted) -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                style="border-collapse: collapse; margin-bottom: 25px;">
+                                <tr>
+                                    <td align="center"
+                                        style="padding: 25px; background-color: #f0f0f5; border-radius: 8px;">
+
+                                        <p
+                                            style="margin: 0 0 15px; font-size: 14px; color: #8E7CC3; font-weight: 600; text-transform: uppercase;">
+                                            Your Confirmation Token
+                                        </p>
+
+                                        <!-- The token itself - highly visible -->
+                                        <div class="token-box"
+                                            style="padding: 12px 25px; background-color: #ffffff; border: 1px solid #dcdce2; border-radius: 6px; display: inline-block;">
+                                            <p
+                                                style="margin: 0; font-size: 22px; font-weight: 700; color: #8E7CC3; letter-spacing: 2px; mso-line-height-rule: exactly;">
+                                                {{token}}
+                                            </p>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Instructions List -->
+                            <!-- <p style="margin: 0 0 10px; font-size: 18px; font-weight: 600; color: #333333;">What to do
+                                next:</p>
+
+                            <ol style="margin: 0 0 25px; padding-left: 20px; list-style-position: inside;">
+                                <li style="margin-bottom: 8px;">
+                                    Copy the token above (it should be about 6 to 10 characters long, depending on your
+                                    system).
+                                </li>
+                                <li style="margin-bottom: 8px;">
+                                    Return to the signup screen or confirmation page on our site.
+                                </li>
+                                <li style="margin-bottom: 0;">
+                                    Paste the copied token into the confirmation box and submit.
+                                </li>
+                            </ol> -->
+
+                            <p style="margin: 0 0 25px;">
+                                Once your email is confirmed, you’ll be able to create your password and complete your account setup.
+                            </p>
+
+                            <p style="margin: 0 0 25px; font-size: 14px; color: #777777;">
+                                If you did not sign up for an account with Serenitas, please disregard this email. Your
+                                email address will not be confirmed unless the token is used.
+                            </p>
+
+                            <!-- Signature -->
+                            <p style="margin: 0; padding-top: 20px; border-top: 1px solid #f0f0f5; font-size: 15px;">
+                                Best regards,<br>
+                                <strong style="color: #333333;">The Serenitas Team</strong>
+                            </p>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center"
+                            style="padding: 20px 40px; font-size: 12px; color: #a0a0a0; background-color: #ffffff; border-radius: 0 0 12px 12px; border-top: 1px solid #f0f0f5;">
+                            <p style="margin: 0;">&copy;2025, Serenitas</p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

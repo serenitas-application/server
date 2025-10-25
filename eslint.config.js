@@ -32,8 +32,10 @@ export default [
         node: true,
         alias: {
           map: [
+            ['#infrastructure', './src/infrastructure'],
             ['#modules', './src/modules'],
             ['#common', './src/common'],
+            ['#static', './src/static'],
           ],
           extensions: ['.js', '.ts', '.d.ts'],
         },

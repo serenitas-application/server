@@ -2,10 +2,16 @@ import { userService } from '#modules/users/users.service.js';
 import { authService } from '#modules/auth/auth.service.js';
 import { pagesService } from '#modules/pages/pages.service.js';
 import { pageGroupsService } from '#modules/page-groups/page-groups.service.js';
-import { SessionStore } from '#modules/auth/sessions/sessions.storage.js';
 import { diaryService } from '#modules/diary/diary.services.js';
+import { mailerService } from '#modules/mailer/mailer.service.js';
 
-export function appServices(repo) {
+export function appServices({
+  repo,
+  sessionStore,
+  tokensStore,
+  mailer: mailerProvider,
+  logger,
+}) {
   const {
     users: usersRepo,
     diary: diaryRepo,
@@ -13,12 +19,12 @@ export function appServices(repo) {
     pageGroups: pageGroupsRepo,
   } = repo;
 
-  const sessionStorage = new SessionStore();
   const users = userService(usersRepo);
-  const auth = authService(users, sessionStorage);
+  const mailer = mailerService(mailerProvider, logger);
+  const auth = authService(users, mailer, sessionStore, tokensStore);
   const diary = diaryService(diaryRepo);
   const pageGroups = pageGroupsService(pageGroupsRepo);
   const pages = pagesService(pagesRepo);
 
-  return { users, auth, diary, pages, pageGroups, session: sessionStorage };
+  return { users, auth, diary, pages, pageGroups, session: sessionStore };
 }

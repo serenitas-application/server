@@ -18,6 +18,16 @@ const verify = (hashedValue, value) =>
     });
   });
 
-const generate = (id) => `TEST${id}TEST`;
+const getRandomId = () => nodeCrypto.randomUUID();
 
-export const crypto = { hash, verify, generate };
+const generateToken = (length = 8) => {
+  const chars = 'AaBbCcDdEeFfGgHhJjKkLlMmNnPpQqRrSsTtUuVvWwXxYyZz23456789';
+  const bytes = nodeCrypto.randomBytes(length);
+  let token = '';
+  for (let i = 0; i < length; i++) {
+    token += chars[bytes[i] % chars.length];
+  }
+  return token;
+};
+
+export const crypto = { hash, verify, getRandomId, generateToken };
