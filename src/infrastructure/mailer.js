@@ -5,7 +5,7 @@ export function mailerProvider(config, log) {
   const transport = nodemailer.createTransport({
     host: config.host,
     port: Number(config.port),
-    secure: false,
+    secure: true,
     auth: {
       user: config.user,
       pass: config.pass,
