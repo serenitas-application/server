@@ -11,7 +11,6 @@ export function mailerService(mailer, logger) {
     template = template.replace(/{{username}}/g, payload.username);
 
     const mailObj = {
-      from: 'Serenitas',
       to: payload.email,
       subject: 'Your Serenitas journey starts here ✨',
       html: template,
@@ -30,7 +29,6 @@ export function mailerService(mailer, logger) {
     template = template.replace(/{{token}}/g, payload.token);
 
     const mailObj = {
-      from: 'Serenitas',
       to: payload.email,
       subject: 'Your Serenitas confirmation code is inside ✨',
       html: template,

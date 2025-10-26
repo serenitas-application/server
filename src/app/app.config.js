@@ -23,10 +23,6 @@ export const appConfig = {
     optionsSuccessStatus: 204,
   },
   mailer: {
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: true,
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    api: process.env.RESEND_API_KEY,
   },
 };
