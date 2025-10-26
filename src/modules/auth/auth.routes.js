@@ -21,11 +21,10 @@ export async function authRoutes(app) {
         userAgent,
       });
 
-      reply.setCookie(AUTH_SESSION_COOKIE_NAME, sessionId, {
-        httpOnly: true,
-        path: '/',
-        maxAge,
-      });
+      reply.header(
+        'Set-Cookie',
+        `${AUTH_SESSION_COOKIE_NAME}=${sessionId}; Path=/; HttpOnly; Secure; SameSite=None; Partitioned; Max-Age=${maxAge}`,
+      );
 
       return { data: sessionId };
     },
