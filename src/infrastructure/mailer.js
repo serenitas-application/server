@@ -1,41 +1,23 @@
-import { AppError, ErrorCode } from '#common/app-error/app-error.js';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 export function mailerProvider(config, log) {
-  const transport = nodemailer.createTransport({
-    host: config.host,
-    port: Number(config.port),
-    secure: true,
-    auth: {
-      user: config.user,
-      pass: config.pass,
-    },
-  });
+  const resend = new Resend(config.api);
 
   async function sendMail(params) {
-    const mail = {
+    const { data, error } = await resend.emails.send({
+      from: 'Serenitas <no-reply@resend.dev>',
       to: params.to,
-      from: params.from,
       subject: params.subject,
       html: params.html ?? undefined,
       text: params.text ?? undefined,
-    };
+    });
 
-    const result = await transport
-      .sendMail(mail)
-      .catch((err) => handleError(err));
-
-    return result?.messageId;
-  }
-
-  function handleError(error) {
-    log.error(error);
-    if (error?.message === 'No recipients defined') {
-      throw new AppError(
-        ErrorCode.INVALID_STATE,
-        'Email address not specified',
-      );
+    if (error) {
+      log.error(JSON.stringify(error));
+      throw new Error(JSON.stringify(error));
     }
+
+    return data;
   }
 
   return { sendMail };
