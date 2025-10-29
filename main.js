@@ -8,7 +8,7 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { Logger, StreamForLogger } from '#infrastructure/logger.js';
-import { setupApplication } from './setup.js';
+import { setupApplication } from './src/setup.js';
 
 const LOG_FOLDER_NAME = 'logs';
 const LOG_DIR = path.resolve(process.cwd(), LOG_FOLDER_NAME);
