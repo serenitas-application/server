@@ -79,8 +79,10 @@ export async function authRoutes(app) {
       await authService.logout(sessionId);
 
       reply.clearCookie(AUTH_SESSION_COOKIE_NAME, {
-        path: '/',
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        path: '/',
       });
 
       return { ok: true };

@@ -55,6 +55,7 @@ await server.register(routes.pageGroups, { prefix: '/api/page-groups' });
 
 async function startServer() {
   const startedOn = await server.listen({
+    host: config.host,
     port: config.port,
   });
   const startesAt = new Date().toISOString();
